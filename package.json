@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "if [ \"$IGNORE_TYPES\" = \"true\" ]; then next build; else tsc --noEmit && next build; fi",
     "start": "next start",
     "lint": "next lint",
-    "build:ignore-types": "tsc --noEmit && next build"
+    "build:ignore-types": "tsc --noEmit --skipLibCheck && next build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
