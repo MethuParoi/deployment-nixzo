@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "local-build": "next build",
     "build": "node -e \"const { execSync } = require('child_process'); execSync(process.env.IGNORE_TYPES === 'true' ? 'next build' : 'tsc --noEmit && next build', { stdio: 'inherit' });\"",
     "start": "next start",
     "lint": "next lint",
