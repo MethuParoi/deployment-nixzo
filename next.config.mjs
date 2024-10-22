@@ -10,6 +10,12 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "deployment-nixzo.vercel.app",
+        port: "",
+        pathname: "/_next/**",
+      },
+      {
+        protocol: "https",
         hostname: "kjqzojrvmhadxwftawlo.supabase.co",
         port: "",
         pathname: "/storage/v1/object/public/product_images/**",
