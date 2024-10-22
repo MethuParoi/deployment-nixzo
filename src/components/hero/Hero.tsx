@@ -108,12 +108,17 @@ const Hero = () => {
     setMobilePage((prev) => (prev + 1 >= 3 ? 0 : prev + 1));
   };
 
+  // Remove any double slashes
+  const sanitizeUrl = (url) => {
+    return url ? url.replace(/([^:]\/)\/+/g, "$1") : "";
+  };
+
   const getImageSrc = () => {
-    return bannerImages[page]?.src || localSlides[page]?.src;
+    return sanitizeUrl(bannerImages[page]?.src || localSlides[page]?.src);
   };
 
   const getMobileImageSrc = () => {
-    return (
+    return sanitizeUrl(
       bannerImages[mobilePage + 3]?.src || localSlides[mobilePage + 3]?.src
     );
   };
@@ -134,6 +139,7 @@ const Hero = () => {
               objectFit="contain" // Ensure full cover to fill container
               className="absolute inset-0"
               loading="lazy"
+              unoptimized={true}
               sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div
