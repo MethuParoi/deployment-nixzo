@@ -41,39 +41,48 @@ import { type CookieOptions, createServerClient } from "@supabase/ssr";
 // }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const code = searchParams.get("code");
+  try {
+    const { searchParams } = new URL(request.url);
+    const code = searchParams.get("code");
 
-  if (code) {
-    const cookieStore = cookies();
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
+    if (code) {
+      const cookieStore = cookies();
+      const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            get(name: string) {
+              return cookieStore.get(name)?.value;
+            },
+            set(name: string, value: string, options: CookieOptions) {
+              cookieStore.set({ name, value, ...options });
+            },
+            remove(name: string) {
+              cookieStore.set({ name, value: "", maxAge: -1 });
+            },
           },
-          set(name: string, value: string, options: CookieOptions) {
-            cookieStore.set({ name, value, ...options });
-          },
-          remove(name: string, options: CookieOptions) {
-            cookieStore.delete({ name, ...options });
-          },
-        },
+        }
+      );
+
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+      if (error) {
+        console.error("Exchange code error:", error);
+        return NextResponse.redirect(
+          new URL("/auth/auth-code-error", request.url)
+        );
       }
-    );
 
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-    if (error) {
-      console.error("Error exchanging code for session:", error);
-      return NextResponse.redirect("/auth/auth-code-error");
+      // Successful login redirect to home
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
-    // Redirect to home or the next page after successful sign-in
-    return NextResponse.redirect("/");
+    // Redirect to error page if no code is present
+    return NextResponse.redirect(new URL("/auth/auth-code-error", request.url));
+  } catch (err) {
+    console.error("Callback handler error:", err);
+    return NextResponse.error(); // Gracefully handle server error
   }
-
-  return NextResponse.redirect("/auth/auth-code-error");
 }
+
