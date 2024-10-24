@@ -87,12 +87,42 @@ function SignIn() {
   };
 
   async function socialAuth(provider: Provider) {
-    await supabaseClient.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${location.origin}/auth/callback`,
-      },
-    });
+    // await supabaseClient.auth.signInWithOAuth({
+    //   provider,
+    //   options: {
+    //     redirectTo: `${location.origin}/auth/callback`,
+    //   },
+    // });
+
+    try {
+      const { data, error } = await supabaseClient.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        console.error("OAuth Sign-in error:", error);
+        toast.error("Error during authentication. Please try again.", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "colored",
+        });
+        return;
+      }
+
+      if (data) {
+        console.log("OAuth sign-in initiated successfully.");
+      }
+    } catch (err) {
+      console.error("Unexpected error during OAuth sign-in:", err);
+      toast.error("An unexpected error occurred. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "colored",
+      });
+    }
   }
 
   return (

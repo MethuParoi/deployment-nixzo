@@ -24,3 +24,31 @@ export async function supabaseServerClient() {
     }
   );
 }
+
+//------------------------------------
+
+// import { createServerClient } from "@supabase/ssr";
+// import { cookies } from "next/headers";
+
+// export async function supabaseServerClient() {
+//   const cookieStore = cookies();
+
+//   return createServerClient({
+//     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//     supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+//     cookieOptions: {
+//       // Specify the domain explicitly to ensure cookies are consistent across attempts
+//       domain: "nixzobd.com",
+//       sameSite: "Lax", // Helps with proper cross-domain cookie setting
+//     },
+//     getCookie(name) {
+//       return cookieStore.get(name)?.value;
+//     },
+//     setCookie(name, value, options) {
+//       cookieStore.set({ name, value, ...options });
+//     },
+//     removeCookie(name) {
+//       cookieStore.set({ name, value: "", maxAge: -1 });
+//     },
+//   });
+// }
