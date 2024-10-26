@@ -24,6 +24,7 @@ import Button from "../ui/Button";
 import { setGeneral } from "@/store/features/auth/authSlice";
 import _ from "lodash";
 import { RootState } from "@/store/store";
+import { getProducts } from "../../../utils/manageProducts";
 
 function Navbar() {
   const [hasMounted, setHasMounted] = useState(false);
@@ -136,7 +137,7 @@ function Navbar() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getAllProducts();
+        const data = await getProducts();
         // setProductDesc(data);
         // Check if data is an array
         if (Array.isArray(data)) {
@@ -356,7 +357,7 @@ function Navbar() {
 }
 
 export default Navbar;
-function getAllProducts() {
+function getProducts() {
   throw new Error("Function not implemented.");
 }
 
