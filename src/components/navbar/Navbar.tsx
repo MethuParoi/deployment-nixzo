@@ -158,8 +158,10 @@ function Navbar() {
 
   useEffect(() => {
     if (ProductDesc && ProductDesc.length > 0 && searchValue) {
-      const filtered = ProductDesc.filter((item) =>
-        item.title.toLowerCase().includes(searchValue.toLowerCase())
+      const filtered = ProductDesc.filter(
+        (item) =>
+          item.title &&
+          item.title.toLowerCase().includes(searchValue.toLowerCase())
       );
       setFilteredProducts(filtered);
     }
