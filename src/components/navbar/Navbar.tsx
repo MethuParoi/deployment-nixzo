@@ -357,7 +357,7 @@ function Navbar() {
 }
 
 export default Navbar;
-function getProducts() {
-  throw new Error("Function not implemented.");
-}
+// function getProducts() {
+//   throw new Error("Function not implemented.");
+// }
 
